@@ -1,0 +1,86 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+ 
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --primary: 287 47% 38%; /* #82358C */
+    --primary-foreground: 0 0% 100%;
+ 
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+ 
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+ 
+    --secondary: 287 47% 95%;
+    --secondary-foreground: 287 47% 38%;
+ 
+    --muted: 287 47% 95%;
+    --muted-foreground: 287 10% 40%;
+ 
+    --accent: 287 47% 95%;
+    --accent-foreground: 287 47% 38%;
+ 
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 287 47% 90%;
+    --input: 287 47% 90%;
+    --ring: 287 47% 38%;
+ 
+    --radius: 1rem;
+  }
+}
+ 
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-white text-foreground;
+  }
+}
+
+.feature-card {
+  @apply relative overflow-hidden rounded-2xl border p-6 transition-all hover:shadow-lg;
+}
+
+.feature-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    45deg,
+    transparent 0%,
+    rgba(130, 53, 140, 0.1) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.feature-card:hover::before {
+  opacity: 1;
+}
+
+.search-bar {
+  @apply w-full max-w-3xl mx-auto bg-white rounded-full shadow-lg border border-gray-200 focus-within:border-[#82358C] transition-all;
+}
+
+.game-card {
+  @apply bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all;
+}
+
+.game-card img {
+  @apply aspect-[4/3] object-cover w-full;
+}
+
+.rating-star {
+  @apply text-[#82358C];
+}
