@@ -1,6 +1,10 @@
 const express = require('express');
-const { criarCobranca } = require('./asaas');
+const { criarCobranca, createPayment } = require('./asaas');
 const { createOrder } = require('./lalamove');
+const { checkTransactionFraud } = require('./antifraud')
+const { createTransaction } = require('./firebase');
+
+
 const router = express.Router();
 
 // Asaas Routes
@@ -24,6 +28,41 @@ router.post('/lalamove/create-order', async (req, res) => {
     console.error('Erro ao criar ordem de entrega:', error);
     res.status(500).json({ erro: 'Erro ao criar ordem de entrega' });
   }
+});
+
+// Antifraud Routes
+router.post('/checkout', async (req, res) => {    
+  try {
+    const { cartItems, userData, paymentInfo } = req.body;
+
+    const transactionData = {
+      transaction_id: `TX_${Date.now()}`,
+      customer_name: userData.customerName,
+      cardholder_name: userData.cardholderName,
+      purchase_location: userData.billingCity,
+      user_location: userData.shippingCity,
+      customer_age: userData.customerAge,
+    };
+    const fraudCheck = await checkTransactionFraud(transactionData);
+
+    if (!fraudCheck.approved) {
+      return res.status(400).json({ message: fraudCheck.message });
+    }
+        const transaction = await createTransaction(cartItems, userData, paymentInfo);
+        const payment = await createPayment(transaction, paymentInfo);
+        res.status(201).json({ message: 'Transaction successful', transaction, payment });
+    } catch (error) {
+        console.error('Error in checkout:', error);
+        res.status(500).json({ message: 'Internal server error', error });
+    }
+});
+
+router.post('/transactions', async (req, res) => {
+    try {
+        res.status(201).json({});
+    } catch (error) {
+        res.status(500).json({ message: 'Internal server error', error });
+    }
 });
 
 // Basic Route

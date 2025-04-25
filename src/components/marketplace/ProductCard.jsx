@@ -1,10 +1,13 @@
-import React from "react"
+import React, { useContext } from "react"
 import { motion } from "framer-motion"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Star, MapPin } from "lucide-react"
+import { CartContext } from "@/contexts/CartContext"
 
-export default function ProductCard({ product, onBuy }) {
+export default function ProductCard({ product }) {
+  const { addToCart } = useContext(CartContext)
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
@@ -52,14 +55,12 @@ export default function ProductCard({ product, onBuy }) {
         </CardContent>
 
         <CardFooter className="p-4 pt-0 flex gap-2">
-          {product.type !== "rental" && (
-            <Button
-              className="flex-1 bg-[#82358C] hover:bg-[#6a2b73]"
-              onClick={onBuy}
-            >
-              Comprar
+          <Button
+            className="flex-1 bg-[#82358C] hover:bg-[#6a2b73]"
+            onClick={() => addToCart(product)}
+          >
+            Add to Cart
             </Button>
-          )}
         </CardFooter>
       </Card>
     </motion.div>

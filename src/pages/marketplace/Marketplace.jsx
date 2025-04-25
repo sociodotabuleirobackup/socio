@@ -9,8 +9,8 @@ import { useToast } from "@/components/ui/use-toast"
 import { Search, Filter, MapPin } from "lucide-react"
 import ProductCard from "@/components/marketplace/ProductCard"
 import FilterSidebar from "@/components/marketplace/FilterSidebar"
+import ProductDetails from "@/pages/marketplace/ProductDetails"
 import { getProductsByLocation } from "@/lib/firebase-schema"
-import {ProductDetails} from "@/components/marketplace/ProductCard"
 
 
 export default function Marketplace() {
@@ -138,21 +138,21 @@ export default function Marketplace() {
           />
 
           {/* Products */}
-          <div className="flex-1">
-            {loading ? (
-              <div>Carregando...</div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {products.map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    onRent={() => navigate(`/product/${product.id}/rent`)}
-                    onBuy={() => navigate(`/product/${product.id}/buy`)}
-                  />
-                ))}
+          <div className="flex-1 flex gap-8">
+            <div className="w-1/3">
+                <ProductDetails/>
+            </div>
+            <div className="w-2/3">
+              {loading ? (
+                <div>Carregando...</div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {products.map((product) => (
+                    <ProductCard key={product.id} product={product} onRent={() => navigate(`/product/${product.id}/rent`)} onBuy={() => navigate(`/product/${product.id}/buy`)} />
+                  ))}
+                </div>
+              )}
               </div>
-            )}
           </div>
         </div>
       </section>

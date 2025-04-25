@@ -1,77 +1,78 @@
-
-import React, { useState, useEffect } from "react"
-import { motion } from "framer-motion"
-import { useParams, useNavigate } from "react-router-dom"
-import { useAuth } from "@/contexts/AuthContext"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
-import { useCart } from "@/contexts/CartContext"
-import { Star, MapPin, Calendar, Users, Clock, DollarSign } from "lucide-react"
+import { Star, MapPin, Calendar, Users, Clock, DollarSign } from "lucide-react";
 import { getProductDetails } from "@/lib/firebase-schema";
-import RentDialog from "@/components/marketplace/RentDialog"
-import BuyDialog from "@/components/marketplace/BuyDialog";
-
-export default function ProductDetails() {
-  const { productId } = useParams()
-  const navigate = useNavigate()
-  const { user } = useAuth()
-  const { toast } = useToast()
-  const { addToCart } = useCart()
-  const [loading, setLoading] = useState(true)
-  const [product, setProduct] = useState(null)
-  const [rentDialogOpen, setRentDialogOpen] = useState(false)
-  const [buyDialogOpen, setBuyDialogOpen] = useState(false)
+const defaultProduct = {
+  id: "default-product",
+  name: "Produto de Exemplo",
+  imageUrl: "https://images.unsplash.com/photo-1613175949857-a1b8d59cae7d", // Substitua pela URL da imagem padrão
+  rating: 4.5,
+  ratingCount: 100,
+  distance: 2.5,
+  type: "rental",
+  pricing: {
+    rental: {
+      daily: 10.0,
+      weekly: 50.0,
+      monthly: 150.0,
+    },
+  },
+  players: { min: 2, max: 4 },
+  duration: 30,
+};
+export default function ProductDetailPage() {
+    const { productId } = useParams();
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const [loading, setLoading] = useState(true);
+  const [product, setProduct] = useState(null);
 
   useEffect(() => {
-    loadProductDetails()
-  }, [productId])
+    loadProductDetails();
+  }, [productId]);
 
   const loadProductDetails = async () => {
     try {
-      setLoading(true)
-      const details = await getProductDetails(productId)
-      setProduct(details)
+      setLoading(true);
+        const details = await getProductDetails(productId);
+      setProduct(details);
     } catch (error) {
       toast({
         title: "Erro ao carregar detalhes",
         description: error.message,
-        variant: "destructive"
-      })
+        variant: "destructive",
+      });
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   if (loading) {
-    return <div>Carregando...</div>
-  }
+    return <div>Carregando...</div>;
+    }
 
   if (!product) {
-    return <div>Produto não encontrado</div>
-  }
+        setProduct(defaultProduct)
+    }
 
   return (
     <div className="min-h-screen bg-gray-50 py-12">
-      <motion.h1
-          className="text-4xl font-bold text-center mb-4"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-        > {product.name}</motion.h1>
       <div className="container mx-auto px-4">
-          <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 gap-8"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
+            <h1 className="text-4xl font-bold mb-8">{product.name}</h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Imagem do Produto */}
-         <div className="rounded-2xl overflow-hidden">
-          <img
-            className="w-full aspect-square object-cover"
-            alt={product.name}
-            src="https://images.unsplash.com/photo-1613175949857-a1b8d59cae7d"
-          />
-        </div>
+          <div className="rounded-2xl overflow-hidden">
+            <img
+              className="w-full aspect-square object-cover"
+              alt={product.name}
+              src="https://images.unsplash.com/photo-1613175949857-a1b8d59cae7d"
+            />
+          </div>
+
           {/* Detalhes do Produto */}
           <div className="space-y-6">
             <div>
@@ -80,9 +81,9 @@ export default function ProductDetails() {
                   <Star className="w-5 h-5 text-yellow-400 fill-current" />
                   <span className="ml-1 font-medium">{product.rating}</span>
                 </div>
-                <span className="text-gray-500">
-                  ({product.ratingCount} avaliações)
-                </span>
+                                <span className="text-gray-500">
+                                    ({product.ratingCount} avaliações)
+                                </span>
               </div>
               <div className="flex items-center text-gray-600 mb-4">
                 <MapPin className="w-5 h-5 mr-2" />
@@ -99,7 +100,7 @@ export default function ProductDetails() {
                 {product.type !== "sale" && (
                   <div>
                     <h3 className="font-semibold mb-2">Aluguel</h3>
-                    <div className="grid grid-cols-3 gap-4">
+                                        <div className="grid grid-cols-3 gap-4">
                       <div className="text-center p-3 border rounded-lg">
                         <p className="text-sm text-gray-500">Diária</p>
                         <p className="text-lg font-bold text-[#82358C]">
@@ -128,9 +129,9 @@ export default function ProductDetails() {
                       <p className="text-center">
                         <span className="text-sm text-gray-500">Valor</span>
                         <span className="block text-lg font-bold text-[#82358C]">
-                          R$ {product.pricing.sale}
-                        </span>
-                      </p>
+                                                        R$ {product.pricing.sale}
+                                                    </span>
+                                                </p>
                     </div>
                   </div>
                 )}
@@ -148,9 +149,9 @@ export default function ProductDetails() {
                   <div>
                     <p className="text-sm text-gray-500">Jogadores</p>
                     <p className="font-medium">
-                      {product.players.min}-{product.players.max}
-                    </p>
-                  </div>
+                                                        {product.players.min}-{product.players.max}
+                                                    </p>
+                                                </div>
                 </div>
                 <div className="flex items-center gap-2">
                   <Clock className="w-5 h-5 text-gray-500" />
@@ -161,32 +162,9 @@ export default function ProductDetails() {
                 </div>
               </CardContent>
             </Card>
-
-            {/* Botões de Ação */}
-            <div className="flex flex-col md:flex-row gap-4">          
-              <button
-                className="w-full md:w-auto bg-[#82358C] hover:bg-[#6a2b73] flex items-center justify-center"               
-                onClick={() => addToCart(product)}
-              >
-                {product.type === "rental" ? "Alugar" : "Comprar"}
-                <DollarSign className="w-4 h-4 ml-2" />
-              </button>
-            </div>
           </div>
-        </motion.div>
+        </div>
       </div>
-     
-      {/* Diálogos */}
-      <RentDialog
-        open={rentDialogOpen}
-        onOpenChange={setRentDialogOpen}
-        product={product}
-      />
-      <BuyDialog
-        open={buyDialogOpen}
-        onOpenChange={setBuyDialogOpen}
-        product={product}
-      />
     </div>
-  )
-}
+  );
+};

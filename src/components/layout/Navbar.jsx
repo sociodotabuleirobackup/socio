@@ -69,18 +69,28 @@ export default function Navbar() {
               <NavigationMenuContent>
                 <ul className="grid w-[400px] gap-3 p-4">
                   <li className="row-span-3">
+                    <NavigationMenuLink asChild>                    
+                        <Link
+                            className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
+                            to="/marketplace"
+                        >
+                            <div className="mb-2 mt-4 text-lg font-medium">
+                                Marketplace
+                            </div>
+                            <p className="text-sm leading-tight text-muted-foreground">
+                                Encontre jogos disponíveis para alugar ou comprar
+                            </p>
+                        </Link>
+                    </NavigationMenuLink>
+                  </li>
+                  <li>
                     <NavigationMenuLink asChild>
-                      <Link
-                        className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                        to="/games"
-                      >
-                        <div className="mb-2 mt-4 text-lg font-medium">
-                          Explorar Jogos
-                        </div>
-                        <p className="text-sm leading-tight text-muted-foreground">
-                          Descubra jogos disponíveis para alugar na sua região
-                        </p>
-                      </Link>
+                        <Link to="/crowdfunding" className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md">
+                            <div className="mb-2 mt-4 text-lg font-medium">
+                                Crowdfunding
+                            </div>
+                        </Link>
+
                     </NavigationMenuLink>
                   </li>
                 </ul>

@@ -137,6 +137,28 @@ export const createCrowdfunding = async (crowdfundingData) => {
   }
 }
 
+// Support Request Functions
+export const createSupportRequest = async (name, email, whatsapp, message) => {
+  try {
+    const supportRequestsRef = collection(db, 'supportRequests')
+    const newSupportRequest = await addDoc(supportRequestsRef, {
+      name: name,
+      email: email,
+      whatsapp: whatsapp,
+      message: message,
+      status: 'open',
+      date: new Date(),
+    })
+
+    return { success: true, supportRequestId: newSupportRequest.id}
+  } catch (error) {
+    console.error('Erro ao criar solicitação de suporte:', error)
+    throw error
+  }
+}
+
+
+
 export default {
   getProductDetails,
   getProductsByLocation,
@@ -144,4 +166,5 @@ export default {
   createTransaction,
   createStore,
   createCrowdfunding
+  ,createSupportRequest
 }

@@ -10,8 +10,10 @@ import { Send } from "lucide-react"
 export default function SupportDialog({ open, onOpenChange }) {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
+  const [whatsapp_number, setWhatsapp_number] = useState("")
+  const [whatsapp_message, setWhatsapp_message] = useState("")
   const [message, setMessage] = useState("")
-  const { toast } = useToast()
+  const { toast } = useToast();
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -60,6 +62,15 @@ export default function SupportDialog({ open, onOpenChange }) {
             />
           </div>
           <div className="space-y-2">
+            <Input
+              type="tel"
+              placeholder="Seu número de WhatsApp"
+              value={whatsapp_number}
+              onChange={(e) => setWhatsapp_number(e.target.value)}
+              className="rounded-xl"
+            />
+          </div>
+          <div className="space-y-2">
             <Textarea
               placeholder="Como podemos ajudar?"
               value={message}
@@ -68,8 +79,8 @@ export default function SupportDialog({ open, onOpenChange }) {
               className="rounded-xl"
             />
           </div>
-          <Button 
-            type="submit" 
+          <Button
+            type="submit"
             className="w-full bg-[#82358C] hover:bg-[#6a2b73] rounded-xl"
           >
             Enviar Mensagem
